@@ -3,6 +3,10 @@ package es.ubu.lsi.model.multas;
 import java.io.Serializable;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="Incidencia.findAll", query="select i from Incidencia i"),
+	@NamedQuery(name="Incidencia.findByConductor", query="select i from Incidencia i where i.conductor.nif = :nif")
+	})
 public class Incidencia {
 
 	@EmbeddedId
@@ -17,12 +21,15 @@ public class Incidencia {
 	
 	@ManyToOne
 	@JoinColumn(name = "idtipo")
+	@OrderBy("id.fecha ASC")
 	private TipoIncidencia tipoIncidencia;
 
 	public Incidencia() {
 		
+		
 	}
 	
+
 	public IncidenciaPK getId() {
 		return id;
 	}
