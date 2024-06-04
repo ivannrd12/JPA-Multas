@@ -1,41 +1,40 @@
 package es.ubu.lsi.model.multas;
 
-import java.util.Set;
-
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import java.util.HashSet;
 
 @Entity
-@NamedQuery(name="Conductor.findAll", query="select c from Conductor c")
+@Table(name ="CONDUCTOR")
+@NamedQueries({
+	@NamedQuery(name="Conductor.findAll", query="select c from Conductor c"),
+	@NamedQuery(name="Conductor.findByNif", query="select c from Conductor c where c.nif = nif")
+	})
 public class Conductor {
 
 	@Id
+	@Column(name="NIF")
 	private String nif;
-	
+	@Column(name="NOMBRE")
 	private String nombre;
-	
+	@Column(name="APELLIDO")
 	private String apellido;
 	
 	@Embedded
+	@Column(name="DIRECCION")
 	private DireccionPostal direccionPostal;
-	
+	@Column(name="PUNTOS")
 	private int puntos;
 	
 	@ManyToOne
-	@JoinColumn(name = "idauto")
+	@JoinColumn(name = "IDAUTO")
 	private Vehiculo vehiculo;
 	
-	@OneToMany(mappedBy = "conductor" ,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "conductor")
+	@OrderBy("id.fecha ASC")
 	private Set<Incidencia> incidencias;
 	
 	public Conductor() {
 		
+		incidencias = new HashSet<Incidencia>();
 	}
 
 	public String getNif() {
