@@ -1,11 +1,15 @@
 package es.ubu.lsi.model.multas;
 
+import java.util.Set;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 @Entity
 @NamedQuery(name="Conductor.findAll", query="select c from Conductor c")
@@ -26,6 +30,9 @@ public class Conductor {
 	@ManyToOne
 	@JoinColumn(name = "idauto")
 	private Vehiculo vehiculo;
+	
+	@OneToMany(mappedBy = "nif" ,fetch = FetchType.LAZY)
+	private Set<Incidencia> incidencias;
 	
 	public Conductor() {
 		
@@ -77,6 +84,14 @@ public class Conductor {
 
 	public void setVehiculo(Vehiculo vehiculo) {
 		this.vehiculo = vehiculo;
+	}
+	
+	public Set<Incidencia> getIncidencias() {
+		return incidencias;
+	}
+
+	public void setIncidencias(Set<Incidencia> incidencias) {
+		this.incidencias = incidencias;
 	}
 
 	@Override
