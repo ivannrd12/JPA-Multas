@@ -5,12 +5,9 @@ import java.util.Set;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 
 @Entity
 @NamedQuery(name="Vehiculo.findAll", query="select v from Vehiculo v")
@@ -55,17 +52,17 @@ public class Vehiculo {
 		this.direccionPostal = direccionPostal;
 	}
 
-	public Set<Conductor> getConductoree() {
+	public Set<Conductor> getConductores() {
 		return conductores;
 	}
 
-	public void setConductoree(Set<Conductor> conductoree) {
-		this.conductores = conductoree;
+	public void setConductores(Set<Conductor> conductores) {
+		this.conductores = conductores;
 	}
 
 	@Override
 	public String toString() {
 		return "Vehiculo [idAuto=" + idauto + ", nombre=" + nombre + ", direccionPostal=" + direccionPostal
-				+ ", conductoree=" + conductores + "]";
+				+ ", conductores=" + conductores + "]";
 	}
 }
