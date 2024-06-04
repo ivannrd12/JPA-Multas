@@ -1,8 +1,10 @@
 package es.ubu.lsi.model.multas;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -18,8 +20,8 @@ public class TipoIncidencia {
 	
 	private int valor;
 	
-	@OneToMany(mappedBy="tipoincidencia")
-	private List<Incidencia> incidencias;
+	@OneToMany(mappedBy="tipoincidencia",fetch = FetchType.LAZY)
+	private Set<Incidencia> incidencias;
 
 	public TipoIncidencia() {
 		
@@ -49,11 +51,11 @@ public class TipoIncidencia {
 		this.valor = valor;
 	}
 
-	public List<Incidencia> getIncidencias() {
+	public Set<Incidencia> getIncidencias() {
 		return incidencias;
 	}
 
-	public void setIncidencias(List<Incidencia> incidencias) {
+	public void setIncidencias(Set<Incidencia> incidencias) {
 		this.incidencias = incidencias;
 	}
 
