@@ -2,14 +2,10 @@ package es.ubu.lsi.dao.multas;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import es.ubu.lsi.dao.JpaDAO;
-import es.ubu.lsi.model.multas.TipoIncidencia;
-
 public class TipoIncidenciaDAO extends JpaDAO<TipoIncidencia, Long>{
 
 	public TipoIncidenciaDAO(EntityManager em) {
+ 
 		super(em);
 		// TODO Auto-generated constructor stub
 	}
@@ -17,8 +13,15 @@ public class TipoIncidenciaDAO extends JpaDAO<TipoIncidencia, Long>{
 	@Override
 	public List<TipoIncidencia> findAll() {
 		// TODO Auto-generated method stub
-	    return getEntityManager().createNamedQuery("TipoIncidencia.findAll", TipoIncidencia.class).getResultList();
+		try {
+			
+			return getEntityManager().createNamedQuery("TipoIncidencia.findAll", TipoIncidencia.class).getResultList();
+			
+		} catch (Exception e) {
+			
+			return null;
+		}
+		
 	}
 
 }
-
