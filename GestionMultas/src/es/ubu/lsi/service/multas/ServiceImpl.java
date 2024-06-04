@@ -1,104 +1,150 @@
 package es.ubu.lsi.service.multas;
 
 import java.util.Date;
-import java.util.List;
-
-import es.ubu.lsi.model.multas.Vehiculo;
-import es.ubu.lsi.service.PersistenceException;
-import es.ubu.lsi.service.PersistenceService;
 
 public class ServiceImpl extends PersistenceService implements Service {
 
-	private VehiculoDAO vehiculoDao;
 	
-	private ConductorDAO conductorDAO;
-	
-	private TipoIncidenciaDAO tipoIncidenciaDAO;
-	
-	private IncidenciaDAO incidenciaDAO;
-	
+	public ServiceImpl() {
+		
+	}
 
 	@Override
 	public void insertarIncidencia(Date fecha, String nif, long tipo) throws PersistenceException {
 		// TODO Auto-generated method stub
-		Conductor conductor = conductorDAO.findById(nif);
 		
-		TipoIncidencia tipoIncidencia = tipoIncidenciaDAO.findById(tipo);
+		EntityManager em = null;
 		
-		if(conductor == null ) {
+		try {
+	        
+			em = this.createSession();
+	    
+	        beginTransaction(em);
+	        
+	        ConductorDAO conductorDAO = new ConductorDAO(em);
+	    	
+	    	TipoIncidenciaDAO tipoIncidenciaDAO = new TipoIncidenciaDAO(em);
+	    	
+	    	IncidenciaDAO incidenciaDAO = new IncidenciaDAO(em);
+	    	
+			Conductor conductor = conductorDAO.findByNif(nif);
 			
-			throw new IncidentException(IncidentError.NOT_EXIST_DRIVER);
+			TipoIncidencia tipoIncidencia = tipoIncidenciaDAO.findById(tipo);
 			
-		} else if (tipoIncidencia == null) {
+			if(conductor == null ) {
+				
+				throw new IncidentException(IncidentError.NOT_EXIST_DRIVER);
+				
+			} else if (tipoIncidencia == null) {
+				
+				throw new IncidentException(IncidentError.NOT_EXIST_INCIDENT_TYPE);
+			}
 			
-			throw new IncidentException(IncidentError.NOT_EXIST_INCIDENT_TYPE);
-		}
-		
-		int puntosRestantes = conductor.getPuntos() - tipoIncidencia.getValor();
-		
-		if (puntosRestantes < 0) {
+			int puntosRestantes = conductor.getPuntos() - tipoIncidencia.getValor();
 			
-			throw new IncidentException(IncidentError.NOT_AVAILABLE_POINTS);
-		}
-		
-		conductor.setPuntos(puntosRestantes);
-		
-		Incidencia incidencia = new Incidencia();
-		
-		IncidenciaPK id = incidencia.new IncidenciaPK();
-		
-		id.setFecha(fecha);
-		
-		id.setNif(nif);
-		
-		incidencia.setId(id);
-		
-		incidencia.setConductor(conductor);
-		
-		incidencia.setTipoIncidencia(tipoIncidencia);
-		
-		incidencia.setAnotacion("");
-		
-		incidenciaDAO.persist(incidencia);
+			if (puntosRestantes < 0) {
+				
+				throw new IncidentException(IncidentError.NOT_AVAILABLE_POINTS);
+			}
+			
+			conductor.setPuntos(puntosRestantes);
+			
+			Incidencia incidencia = new Incidencia();
+			
+			IncidenciaPK id = incidencia.new IncidenciaPK();
+			
+			id.setFecha(fecha);
+			
+			id.setNif(nif);
+			
+			incidencia.setId(id);
+			
+			incidencia.setConductor(conductor);
+			
+			incidencia.setTipoIncidencia(tipoIncidencia);
+			
+			incidencia.setAnotacion("");
+			
+			incidenciaDAO.persist(incidencia);
+			
+			conductorDAO.notify();
+			
+			commitTransaction(em);
+			
+		} catch (Exception e) {
+			
+			if (em != null) {
+				
+				rollbackTransaction(em);
+	        }
+			
+			throw new PersistenceException("Error al insertar la incidencia", e);
+        
+		} finally {
+			
+			if (em != null) {
+				
+            em.close();
+        }
+    }
 	}
 
 	@Override
 	public void indultar(String nif) throws PersistenceException {
+		// TODO Auto-generated method stub
+	
+		//List<Incidencia> incidencias = incidenciaDAO.findByConductor(nif)
+		
 		EntityManager em = null;
+		
 	    try {
 	        
 	        em = this.createSession();
 	    
 	        beginTransaction(em);
+	        
 	        ConductorDAO conductorDAO = new ConductorDAO(em);
-			Conductor conductor = conductorDAO.findById(nif);
+	        
+	        IncidenciaDAO incidenciaDAO = new IncidenciaDAO(em);
+	        
+			Conductor conductor = conductorDAO.findByNif(nif);
 	        
 	        
 	        if (conductor == null) {
-	            throw new PersistenceException("Conductor no encontrado.");
+	        	throw new IncidentException(IncidentError.NOT_EXIST_DRIVER);
 	        }
 	        
 	        conductor.setPuntos(12);
 
+	        List<Incidencia> incidencias = incidenciaDAO.findByConductor(nif);
 	        
-	        for (Incidencia incid : conductor.getIncidencias()) {
-	            incidenciaDAO.remove(incid);
+	        
+	        for (Incidencia incidencia : incidencias) {
+	        	
+	            incidenciaDAO.remove(incidencia);
 	        }
 	        
 	        commitTransaction(em);
+	        
 	    } catch (Exception e) {
+	    	
 	        rollbackTransaction(em);
+	        
 	        throw new PersistenceException("Error al indultar al conductor.", e);
+	        
 	    } finally {
 	        if (em != null) {
 	            em.close();
 	        }
 	    }
+		
+		
 	}
 
 	@Override
 	public List<Vehiculo> consultarVehiculos() throws PersistenceException {
 		// TODO Auto-generated method stub
-		return vehiculoDao.findAll();
+		return null;
 	}
+
 }
