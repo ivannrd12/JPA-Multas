@@ -1,16 +1,10 @@
 package es.ubu.lsi.model.multas;
 
-import java.util.List;
-import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import java.util.HashSet;
 
 @Entity
-@NamedQuery(name="TipoIncidencia.findAll", query="selec t from TipoIncidencia t")
+@NamedQuery(name="Tipoincidencia.findAll", query="select t from TipoIncidencia t")
 public class TipoIncidencia {
 
 	@Id
@@ -20,11 +14,12 @@ public class TipoIncidencia {
 	
 	private int valor;
 	
-	@OneToMany(mappedBy="tipoincidencia",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="tipoIncidencia")
 	private Set<Incidencia> incidencias;
 
 	public TipoIncidencia() {
 		
+		incidencias = new HashSet<Incidencia>();
 	}
 
 	public Long getId() {
