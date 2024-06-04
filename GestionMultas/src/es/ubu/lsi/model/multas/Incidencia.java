@@ -1,22 +1,12 @@
 package es.ubu.lsi.model.multas;
 
 import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQuery(name="Incidencia.findAll", query="select i from Incidencia i")
 public class Incidencia {
 
 	@EmbeddedId
-	private IncidenciaPk id;
+	private IncidenciaPK id;
 	
 	private String anotacion;
 	
@@ -33,12 +23,12 @@ public class Incidencia {
 		
 	}
 	
-	public IncidenciaPk getId() {
+	public IncidenciaPK getId() {
 		return id;
 	}
 
 
-	public void setId(IncidenciaPk id) {
+	public void setId(IncidenciaPK id) {
 		this.id = id;
 	}
 
@@ -74,13 +64,13 @@ public class Incidencia {
 
 
 @Embeddable
-public class IncidenciaPk implements Serializable {
+public class IncidenciaPK implements Serializable {
 
 	private Date fecha;
 		
 	private String nif;
 
-	public IncidenciaPk() {
+	public IncidenciaPK() {
 		
 	}
 
@@ -99,9 +89,14 @@ public class IncidenciaPk implements Serializable {
 	public void setNif(String nif) {
 		this.nif = nif;
 	}
+	
+	
 
 	
+	
+	
 }	
+	
 	
 	
 }
