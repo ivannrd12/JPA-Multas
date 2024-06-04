@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQuery(name="Conductor.findAll", query="select c from Conductor c")
 public class Conductor {
 
 	@Id
