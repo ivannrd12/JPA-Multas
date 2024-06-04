@@ -1,4 +1,4 @@
-ackage es.ubu.lsi.model.multas;
+package es.ubu.lsi.model.multas;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,8 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQuery(name="Incidencia.findAll", query="select i from INCIDENCIA i")
 public class Incidencia {
 
 	@EmbeddedId
