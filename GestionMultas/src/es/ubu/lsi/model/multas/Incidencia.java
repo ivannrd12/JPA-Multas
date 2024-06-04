@@ -12,7 +12,7 @@ import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQuery(name="Incidencia.findAll", query="select i from INCIDENCIA i")
+@NamedQuery(name="Incidencia.findAll", query="select i from Incidencia i")
 public class Incidencia {
 
 	@EmbeddedId
