@@ -1,62 +1,57 @@
 package es.ubu.lsi.service.multas;
 
 import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
-import es.ubu.lsi.dao.multas.ConductorDAO;
-import es.ubu.lsi.dao.multas.IncidenciaDAO;
-import es.ubu.lsi.dao.multas.TipoIncidenciaDAO;
-import es.ubu.lsi.model.multas.Conductor;
-import es.ubu.lsi.model.multas.Incidencia;
-import es.ubu.lsi.model.multas.Incidencia.IncidenciaPK;
-import es.ubu.lsi.model.multas.TipoIncidencia;
-import es.ubu.lsi.model.multas.Vehiculo;
-import es.ubu.lsi.service.PersistenceException;
-import es.ubu.lsi.service.PersistenceService;
-
 
 public class ServiceImpl extends PersistenceService implements Service {
 
 	
 	public ServiceImpl() {
 		
+		
 	}
+	
+	
 
 	@Override
 	public void insertarIncidencia(Date fecha, String nif, long tipo) throws PersistenceException {
 		// TODO Auto-generated method stub
-		
+	
 		EntityManager em = null;
 		
 		try {
-	        
-			em = this.createSession();
-	    
-	        beginTransaction(em);
-	        
+			
+			em = PersistenceFactorySingleton.getEntityManager();
+			
+	        em.getTransaction().begin();
+	       
 	        ConductorDAO conductorDAO = new ConductorDAO(em);
-	    	
+	        
 	    	TipoIncidenciaDAO tipoIncidenciaDAO = new TipoIncidenciaDAO(em);
 	    	
 	    	IncidenciaDAO incidenciaDAO = new IncidenciaDAO(em);
 	    	
 			Conductor conductor = conductorDAO.findByNif(nif);
-			
+		
 			TipoIncidencia tipoIncidencia = tipoIncidenciaDAO.findById(tipo);
 			
+			
+						
 			if(conductor == null ) {
 				
+
 				throw new IncidentException(IncidentError.NOT_EXIST_DRIVER);
 				
+
 			} else if (tipoIncidencia == null) {
 				
+
 				throw new IncidentException(IncidentError.NOT_EXIST_INCIDENT_TYPE);
 			}
 			
+
 			int puntosRestantes = conductor.getPuntos() - tipoIncidencia.getValor();
 			
+
 			if (puntosRestantes < 0) {
 				
 				throw new IncidentException(IncidentError.NOT_AVAILABLE_POINTS);
@@ -80,17 +75,28 @@ public class ServiceImpl extends PersistenceService implements Service {
 			
 			incidencia.setAnotacion("");
 			
-			incidenciaDAO.persist(incidencia);
+			em.persist(incidencia);
 			
-			conductorDAO.notify();
+			em.merge(conductor);
 			
-			commitTransaction(em);
 			
-		} catch (Exception e) {
+			em.getTransaction().commit();
+			
+		} catch (IncidentException e) {
+			
+			e.getError();
+			System.out.println("Probando el servicio...");
+
+		}
+		
+		
+		
+		catch (Exception e) {
 			
 			if (em != null) {
 				
-				rollbackTransaction(em);
+
+				
 	        }
 			
 			throw new PersistenceException("Error al insertar la incidencia", e);
@@ -114,9 +120,9 @@ public class ServiceImpl extends PersistenceService implements Service {
 		
 	    try {
 	        
-	        em = this.createSession();
-	    
-	        beginTransaction(em);
+	    	em = PersistenceFactorySingleton.getEntityManager();
+			
+	        em.getTransaction().begin();
 	        
 	        ConductorDAO conductorDAO = new ConductorDAO(em);
 	        
@@ -139,7 +145,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 	            incidenciaDAO.remove(incidencia);
 	        }
 	        
-	        commitTransaction(em);
+	        em.getTransaction().commit();
 	        
 	    } catch (Exception e) {
 	    	
