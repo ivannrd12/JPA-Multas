@@ -31,7 +31,7 @@ public class Conductor {
 	@JoinColumn(name = "idauto")
 	private Vehiculo vehiculo;
 	
-	@OneToMany(mappedBy = "nif" ,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "conductor" ,fetch = FetchType.LAZY)
 	private Set<Incidencia> incidencias;
 	
 	public Conductor() {
