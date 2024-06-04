@@ -64,14 +64,41 @@ public class ServiceImpl extends PersistenceService implements Service {
 
 	@Override
 	public void indultar(String nif) throws PersistenceException {
-		// TODO Auto-generated method stub
-		
+		EntityManager em = null;
+	    try {
+	        
+	        em = this.createSession();
+	    
+	        beginTransaction(em);
+	        ConductorDAO conductorDAO = new ConductorDAO(em);
+			Conductor conductor = conductorDAO.findById(nif);
+	        
+	        
+	        if (conductor == null) {
+	            throw new PersistenceException("Conductor no encontrado.");
+	        }
+	        
+	        conductor.setPuntos(12);
+
+	        
+	        for (Incidencia incid : conductor.getIncidencias()) {
+	            incidenciaDAO.remove(incid);
+	        }
+	        
+	        commitTransaction(em);
+	    } catch (Exception e) {
+	        rollbackTransaction(em);
+	        throw new PersistenceException("Error al indultar al conductor.", e);
+	    } finally {
+	        if (em != null) {
+	            em.close();
+	        }
+	    }
 	}
 
 	@Override
 	public List<Vehiculo> consultarVehiculos() throws PersistenceException {
 		// TODO Auto-generated method stub
-		return null;
+		return vehiculoDao.findAll();
 	}
-
 }
