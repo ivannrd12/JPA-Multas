@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +17,9 @@ import javax.persistence.SequenceGenerator;
 public class Vehiculo {
 	
 	@Id
-	@SequenceGenerator(name="VehiculoIdAuto_Gen", sequenceName="Vehiculo_Seq")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VehiculoIdAuto_Gen")
-	private String idAuto;
+	@SequenceGenerator(name="Vehiculoaidauto_Gen", sequenceName="Vehiculo_Seq")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="Vehiculoidauto_Gen")
+	private String idauto;
 	
 	private String nombre;
 
@@ -26,18 +27,18 @@ public class Vehiculo {
 	private DireccionPostal direccionPostal;
 
 	
-	@OneToMany(mappedBy="vehiculo")
+	@OneToMany(mappedBy="vehiculo",fetch = FetchType.LAZY)
 	private Set<Conductor> conductores;
 	
 	public Vehiculo() {
 	}
 
 	public String getIdAuto() {
-		return idAuto;
+		return idauto;
 	}
 
-	public void setIdAuto(String idAuto) {
-		this.idAuto = idAuto;
+	public void setIdAuto(String idauto) {
+		this.idauto = idauto;
 	}
 
 	public String getNombre() {
@@ -66,7 +67,7 @@ public class Vehiculo {
 
 	@Override
 	public String toString() {
-		return "Vehiculo [idAuto=" + idAuto + ", nombre=" + nombre + ", direccionPostal=" + direccionPostal
+		return "Vehiculo [idAuto=" + idauto + ", nombre=" + nombre + ", direccionPostal=" + direccionPostal
 				+ ", conductoree=" + conductores + "]";
 	}
 }
