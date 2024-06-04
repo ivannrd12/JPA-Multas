@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 
 import es.ubu.lsi.dao.JpaDAO;
 import es.ubu.lsi.model.multas.Incidencia;
+import es.ubu.lsi.model.multas.Incidencia.IncidenciaPk;
 
 
 public class IncidenciaDAO extends JpaDAO<Incidencia, IncidenciaPk>{
