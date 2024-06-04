@@ -7,9 +7,9 @@ import javax.persistence.EntityManager;
 import es.ubu.lsi.dao.JpaDAO;
 import es.ubu.lsi.model.multas.Conductor;
 
-public class ConductorDao extends JpaDAO<Conductor, String>{
+public class ConductorDAO extends JpaDAO<Conductor, String>{
 
-	public ConductorDao(EntityManager em) {
+	public ConductorDAO(EntityManager em) {
 		super(em);
 		// TODO Auto-generated constructor stub
 	}
