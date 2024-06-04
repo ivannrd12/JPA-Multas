@@ -1,19 +1,14 @@
 package es.ubu.lsi.model.multas;
 
-import java.util.Set;
-
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import java.util.HashSet;
 
 @Entity
 @NamedQuery(name="Vehiculo.findAll", query="select v from Vehiculo v")
 public class Vehiculo {
 	
 	@Id
+	@SequenceGenerator(name="Vehiculoaidauto_Gen", sequenceName="Vehiculo_Seq")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="Vehiculoidauto_Gen")
 	private String idauto;
 	
 	private String nombre;
@@ -26,6 +21,8 @@ public class Vehiculo {
 	private Set<Conductor> conductores;
 	
 	public Vehiculo() {
+		
+		conductores = new HashSet<Conductor>();
 	}
 
 	public String getIdAuto() {
@@ -56,13 +53,13 @@ public class Vehiculo {
 		return conductores;
 	}
 
-	public void setConductores(Set<Conductor> conductores) {
+	public void setConductoree(Set<Conductor> conductores) {
 		this.conductores = conductores;
 	}
 
 	@Override
 	public String toString() {
 		return "Vehiculo [idAuto=" + idauto + ", nombre=" + nombre + ", direccionPostal=" + direccionPostal
-				+ ", conductores=" + conductores + "]";
+				+ ", conductoree=" + conductores + "]";
 	}
 }
