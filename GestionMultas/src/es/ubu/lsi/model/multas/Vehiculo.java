@@ -10,7 +10,8 @@ public class Vehiculo {
 	private String idAuto;
 	
 	private String nombre;
-	
+
+	@Embedded
 	private DireccionPostal direccionPostal;
 	
 }
