@@ -20,6 +20,10 @@ public class ConductorDAO extends JpaDAO<Conductor, String>{
 		return getEntityManager().createNamedQuery("Conductor.findAll", Conductor.class).getResultList();
 
 	}
+	
+	public Conductor findByNif(String nif) {
+		
+		return getEntityManager().createNamedQuery("Conductor.findByNif", Conductor.class).setParameter("nif", nif).getSingleResult();
+	}
 
 }
-
