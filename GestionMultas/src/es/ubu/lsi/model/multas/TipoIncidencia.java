@@ -10,7 +10,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
-@NamedQuery(name="Tipoincidencia.findAll", query="selec t from TIPOINCIDENCIA t")
+@NamedQuery(name="TipoIncidencia.findAll", query="selec t from TipoIncidencia t")
 public class TipoIncidencia {
 
 	@Id
