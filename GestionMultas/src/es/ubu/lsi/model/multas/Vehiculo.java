@@ -17,8 +17,6 @@ import javax.persistence.SequenceGenerator;
 public class Vehiculo {
 	
 	@Id
-	@SequenceGenerator(name="Vehiculoaidauto_Gen", sequenceName="Vehiculo_Seq")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="Vehiculoidauto_Gen")
 	private String idauto;
 	
 	private String nombre;
