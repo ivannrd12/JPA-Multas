@@ -1,38 +1,113 @@
-ndulto del conductor...
-javax.persistence.PersistenceException: org.hibernate.InstantiationException: No default constructor for entity:  : es.ubu.lsi.model.multas.Incidencia$IncidenciaPKIndulto del conductor...
+package es.ubu.lsi.model.multas;
 
-	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:154)
-	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1542)
-	at org.hibernate.query.Query.getResultList(Query.java:165)
-	at es.ubu.lsi.dao.multas.IncidenciaDAO.findByConductor(IncidenciaDAO.java:32)
-	at es.ubu.lsi.service.multas.ServiceImpl.indultar(ServiceImpl.java:168)
-	at es.ubu.lsi.test.TestClient.indultarConductorConDosIncidencias(TestClient.java:141)
-	at es.ubu.lsi.test.TestClient.testService(TestClient.java:112)
-	at es.ubu.lsi.test.TestClient.main(TestClient.java:63)
-Caused by: org.hibernate.InstantiationException: No default constructor for entity:  : es.ubu.lsi.model.multas.Incidencia$IncidenciaPK
-	at org.hibernate.tuple.PojoInstantiator.instantiate(PojoInstantiator.java:85)
-	at org.hibernate.tuple.component.AbstractComponentTuplizer.instantiate(AbstractComponentTuplizer.java:84)
-	at org.hibernate.type.ComponentType.instantiate(ComponentType.java:587)
-	at org.hibernate.type.ComponentType.instantiate(ComponentType.java:593)
-	at org.hibernate.type.ComponentType.resolve(ComponentType.java:691)
-	at org.hibernate.loader.Loader.extractKeysFromResultSet(Loader.java:878)
-	at org.hibernate.loader.Loader.getRowFromResultSet(Loader.java:732)
-	at org.hibernate.loader.Loader.processResultSet(Loader.java:1008)
-	at org.hibernate.loader.Loader.doQuery(Loader.java:964)
-	at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:354)
-	at org.hibernate.loader.Loader.doList(Loader.java:2838)
-	at org.hibernate.loader.Loader.doList(Loader.java:2820)
-	at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2652)
-	at org.hibernate.loader.Loader.list(Loader.java:2647)
-	at org.hibernate.loader.hql.QueryLoader.list(QueryLoader.java:506)
-	at org.hibernate.hql.internal.ast.QueryTranslatorImpl.list(QueryTranslatorImpl.java:396)
-	at org.hibernate.engine.query.spi.HQLQueryPlan.performList(HQLQueryPlan.java:219)
-	at org.hibernate.internal.SessionImpl.list(SessionImpl.java:1404)
-	at org.hibernate.query.internal.AbstractProducedQuery.doList(AbstractProducedQuery.java:1565)
-	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1533)
-	... 6 more
-java.lang.NullPointerException
-	at es.ubu.lsi.test.TestClient.indultarConductorConDosIncidencias(TestClient.java:175)
-	at es.ubu.lsi.test.TestClient.testService(TestClient.java:112)
-	at es.ubu.lsi.test.TestClient.main(TestClient.java:63)
-FIN.............
+import java.io.Serializable;
+
+@Entity
+@Table(name = "INCIDENCIA")
+@NamedQueries({
+	@NamedQuery(name="Incidencia.findAll", query="select i from Incidencia i"),
+	@NamedQuery(name="Incidencia.findByConductor", query="select i from Incidencia i where i.conductor.nif = :nif")
+	})
+public class Incidencia {
+
+	@EmbeddedId
+	private IncidenciaPK id;
+	@Column(name = "ANOTACION")
+	private String anotacion;
+	
+	@ManyToOne
+	@MapsId("nif")
+	@JoinColumn(name = "NIF")
+	private Conductor conductor;
+	
+	@ManyToOne
+	@JoinColumn(name = "IDTIPO")
+	@OrderBy("id.fecha ASC")
+	private TipoIncidencia tipoIncidencia;
+
+	public Incidencia() {
+		
+	}
+	
+
+	public IncidenciaPK getId() {
+		return id;
+	}
+
+
+	public void setId(IncidenciaPK id) {
+		this.id = id;
+	}
+
+
+	public String getAnotacion() {
+		return anotacion;
+	}
+
+
+	public void setAnotacion(String anotacion) {
+		this.anotacion = anotacion;
+	}
+
+
+	public Conductor getConductor() {
+		return conductor;
+	}
+
+
+	public void setConductor(Conductor conductor) {
+		this.conductor = conductor;
+	}
+
+
+	public TipoIncidencia getTipoIncidencia() {
+		return tipoIncidencia;
+	}
+
+
+	public void setTipoIncidencia(TipoIncidencia tipoIncidencia) {
+		this.tipoIncidencia = tipoIncidencia;
+	}
+
+
+@Embeddable
+public class IncidenciaPK implements Serializable {
+
+
+	@Column(name = "FECHA")
+	private Date fecha;
+	@Column(name = "NIF")	
+	private String nif;
+
+
+	public IncidenciaPK() {
+	
+	}
+
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public String getNif() {
+		return nif;
+	}
+
+	public void setNif(String nif) {
+		this.nif = nif;
+	}
+	
+	
+
+	
+	
+	
+}	
+	
+	
+	
+}
