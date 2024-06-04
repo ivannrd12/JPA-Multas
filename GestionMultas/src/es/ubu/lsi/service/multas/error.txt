@@ -2,24 +2,8 @@ Iniciando...
 Probando el servicio...
 Framework y servicio iniciado...
 Insertar incidencia correcta
-Exception in thread "main" java.lang.ExceptionInInitializerError
-	at es.ubu.lsi.service.PersistenceService.createSession(PersistenceService.java:19)
-	at es.ubu.lsi.service.multas.ServiceImpl.insertarIncidencia(ServiceImpl.java:35)
-	at es.ubu.lsi.test.TestClient.insertarIncidenciaCorrecta(TestClient.java:221)
+FIN.............
+java.lang.NullPointerException
+	at es.ubu.lsi.test.TestClient.insertarIncidenciaCorrecta(TestClient.java:272)
 	at es.ubu.lsi.test.TestClient.testService(TestClient.java:105)
 	at es.ubu.lsi.test.TestClient.main(TestClient.java:63)
-Caused by: org.hibernate.AnnotationException: mappedBy reference an unknown target entity property: es.ubu.lsi.model.multas.Incidencia.tipoincidencia in es.ubu.lsi.model.multas.TipoIncidencia.incidencias
-	at org.hibernate.cfg.annotations.CollectionBinder.bindStarToManySecondPass(CollectionBinder.java:844)
-	at org.hibernate.cfg.annotations.CollectionBinder$1.secondPass(CollectionBinder.java:795)
-	at org.hibernate.cfg.CollectionSecondPass.doSecondPass(CollectionSecondPass.java:53)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processSecondPasses(InFlightMetadataCollectorImpl.java:1693)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processSecondPasses(InFlightMetadataCollectorImpl.java:1661)
-	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:286)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1214)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1245)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:39)
-	at es.ubu.lsi.service.PersistenceFactorySingleton.<init>(PersistenceFactorySingleton.java:33)
-	at es.ubu.lsi.service.PersistenceFactorySingleton.<clinit>(PersistenceFactorySingleton.java:29)
-	... 5 more
